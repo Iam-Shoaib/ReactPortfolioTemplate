@@ -4,19 +4,31 @@ import {Box} from "@mui/material";
 
 function PortfolioBlock(props) {
    const {image, live, source, title} = props;
+   
+   // Check if links are valid (not empty, "#", or just whitespace)
+   const hasLiveLink = live && live !== "#" && live.trim() !== "";
+   const hasSourceLink = source && source !== "#" && source.trim() !== "";
+   const hasAnyLink = hasLiveLink || hasSourceLink;
+   
    return (
       <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
-         <Box component={'img'} src={image} alt={'mockup'}/>
+         <Box component={'img'} src={image} alt={title}/>
          <h1 style={{fontSize: '2rem'}}>{title}</h1>
-         <Box className={'portfolio'} display={'flex'} flexDirection={'column'} gap={'0.5rem'}
-              alignItems={'center'} fontSize={'1.5rem'} py={'2rem'}>
-            <Box p={1} border={'2px solid black'} borderRadius={'25px'}>
-               <IconLink link={live} title={'Live Demo'} icon={'fa fa-safari'}/>
+         {hasAnyLink && (
+            <Box className={'portfolio'} display={'flex'} flexDirection={'column'} gap={'0.5rem'}
+                 alignItems={'center'} fontSize={'1.5rem'} py={'2rem'}>
+               {hasLiveLink && (
+                  <Box p={1} border={'2px solid black'} borderRadius={'25px'}>
+                     <IconLink link={live} title={'Live Demo'} icon={'fa fa-safari'}/>
+                  </Box>
+               )}
+               {hasSourceLink && (
+                  <Box p={1} border={'2px solid black'} borderRadius={'25px'}>
+                     <IconLink link={source} title={'Source Code'} icon={'fa fa-code'}/>
+                  </Box>
+               )}
             </Box>
-            <Box p={1} border={'2px solid black'} borderRadius={'25px'}>
-               <IconLink link={source} title={'Source Code'} icon={'fa fa-code'}/>
-            </Box>
-         </Box>
+         )}
       </Box>
    );
 }
